@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.2
+## 1.0.0
 
 - Added generic full-height edge-rail docking for left/right side navigation,
   drawers, and secondary columns that are not mounted as fixed portal roots.
