@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Statusline",
-  "version": "0.10.2",
+  "version": "1.0.0",
   "description": "A configurable browser status bar with shortcuts, capture tools, world clocks, and browser actions for Chromium browsers.",
   "permissions": [
     "storage"
