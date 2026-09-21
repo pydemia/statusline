@@ -18,9 +18,9 @@ Edge and Google Chrome. It is intended for users who prefer persistent browser
 status information and quick actions similar to the status bar workflow found
 in Vivaldi and traditional desktop browsers.
 
-The bar can be placed at the top or bottom and uses a three-zone layout:
-user-created shortcuts at the left, an editable current-address field in the
-center, and status/actions at the right. Built-in features include hovered-link
+The bar can be placed at the top or bottom and uses a compact two-zone layout:
+user-created shortcuts at the left and status/actions at the right. The center
+is intentionally left flexible so action controls remain available in narrow windows. Built-in features include hovered-link
 targets, viewport size, a scrollbar-style reading-position indicator, editable
 page zoom, visible/selected/scrolling/full-page capture, tab Stack and Tile
 actions, a configurable date/time display, and a world-clock panel.
@@ -100,18 +100,17 @@ https://github.com/pydemia/statusline
 1. Install the extension and open an ordinary HTTP or HTTPS page.
 2. Statusline appears at the bottom by default.
 3. Hover a link to display its target.
-4. Use the center address field to navigate.
-5. Observe the `SCROLL` indicator; its thumb follows the active document or
+4. Observe the `SCROLL` indicator; its thumb follows the active document or
    nested scroll container without showing a second percentage.
-6. Type an exact zoom percentage or use `-` / `+`.
-7. Open Capture and test Visible area or Select area.
-8. Open Tile or Stack and select tabs in the in-page picker. Stack works where
+5. Type an exact zoom percentage or use `-` / `+`.
+6. Open Capture and test Visible area or Select area.
+7. Open Tile or Stack and select tabs in the in-page picker. Stack works where
    Chromium tab grouping is available. Tile reports an unsupported state if the
    browser does not expose the native Split View extension API.
-9. Click `+`, add an HTTP/HTTPS shortcut, then open it. It appears in a compact
+8. Click `+`, add an HTTP/HTTPS shortcut, then open it. It appears in a compact
    top-level browser window and follows normal authentication redirects.
-10. Click the date/time widget to edit the primary clock and add world clocks.
-11. Open Settings to adjust theme, height, dock mode, widget visibility, and
+9. Click the date/time widget to edit the primary clock and add world clocks.
+10. Open Settings to adjust theme, height, dock mode, widget visibility, and
     order.
-12. Browser-owned pages such as `edge://*` and `chrome://*` do not allow
+11. Browser-owned pages such as `edge://*` and `chrome://*` do not allow
     ordinary content scripts; Statusline intentionally does not appear there.
