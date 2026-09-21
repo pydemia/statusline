@@ -35,7 +35,7 @@ function renderWidgets() {
     }
     const row = document.createElement("div");
     row.className = "widget-row";
-    const fixedPlacement = config.id === "panels" || config.id === "host";
+    const fixedPlacement = config.id === "panels";
     row.draggable = !fixedPlacement;
     row.dataset.id = config.id;
 
@@ -64,8 +64,8 @@ function renderWidgets() {
     side.className = "widget-side";
     side.setAttribute("aria-label", `${definition.label} placement`);
     const option = document.createElement("option");
-    option.value = config.id === "host" ? "center" : config.id === "panels" ? "left" : "right";
-    option.textContent = config.id === "host" ? "Center" : config.id === "panels" ? "Far left" : "Right";
+    option.value = config.id === "panels" ? "left" : "right";
+    option.textContent = config.id === "panels" ? "Far left" : "Right";
     option.selected = true;
     side.append(option);
     side.disabled = true;
