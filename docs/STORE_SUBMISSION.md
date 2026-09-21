@@ -1,6 +1,6 @@
 # Store submission copy
 
-This file contains reviewer-facing copy for Statusline v0.10.2. Keep these
+This file contains reviewer-facing copy for Statusline v1.0.0. Keep these
 statements aligned with the packaged code and the public privacy policy.
 
 ## Product
