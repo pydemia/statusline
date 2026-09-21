@@ -133,28 +133,26 @@ with sync_playwright() as p:
     assert page.locator('.zone-left > .widget').count() == 1
     assert panel_dock.locator(".panel-launcher").last.get_attribute("data-panel-manage") == "true"
 
-    assert page.locator('.zone-center > [data-widget="host"]').count() == 1
-    assert page.locator('.zone-center > .widget').count() == 1
-    assert page.locator('.zone-right > [data-widget="host"]').count() == 0
+    assert page.locator('.zone-center').count() == 0
+    assert page.locator('[data-widget="host"]').count() == 0
+    assert page.locator('.address-input').count() == 0
     assert page.locator('.zone-right > [data-widget="panels"]').count() == 0
     assert page.locator('.zone-right > [data-widget="capture"]').count() == 1
     assert page.locator('.zone-right > [data-widget="clock"]').count() == 1
+
+    # Narrow windows should prioritize action/status controls now that the address field is removed.
+    page.set_viewport_size({"width": 720, "height": 720})
+    page.wait_for_timeout(120)
+    for widget_id in ["capture", "devtools", "tile", "stack", "zoom", "clock"]:
+        rect = page.locator(f'[data-widget="{widget_id}"]').bounding_box()
+        assert rect and rect["x"] + rect["width"] <= 720
+        assert rect["x"] >= 0
+    page.set_viewport_size({"width": 1280, "height": 800})
+    page.wait_for_timeout(120)
     assert page.locator('[data-widget="title"]').count() == 0
     assert page.locator('[data-widget="load"]').count() == 0
-    assert page.locator('.zone-center').evaluate(
-        "el => getComputedStyle(el).borderLeftWidth === '0px' && getComputedStyle(el).borderRightWidth === '0px'"
-    )
-    assert page.locator('.address-input').evaluate(
-        "el => getComputedStyle(el).borderTopWidth === '0px'"
-    )
     assert page.locator('.bar').evaluate(
         "el => getComputedStyle(el).paddingLeft === '14px' && getComputedStyle(el).paddingRight === '14px'"
-    )
-    assert page.locator('.address-input').evaluate(
-        "el => getComputedStyle(el).backgroundColor === 'rgb(255, 255, 255)'"
-    )
-    assert page.locator('.address-input').evaluate(
-        "el => getComputedStyle(el).color === 'rgb(32, 32, 32)'"
     )
     assert page.locator('.zone-right > .widget').first.evaluate(
         "el => getComputedStyle(el).backgroundColor === 'rgba(0, 0, 0, 0)'"
@@ -195,10 +193,6 @@ with sync_playwright() as p:
     assert page.locator('input[aria-label="Date and time format"]').input_value() == 'HH:mm'
     assert page.locator('input[aria-label="Primary clock time zone"]').input_value() == 'Asia/Tokyo'
     page.locator('.surface-icon-button[aria-label="Close"]').click()
-
-    address = page.locator('[data-widget="host"] .address-input')
-    assert address.count() == 1
-    assert address.input_value() == "about:blank"
 
     page.screenshot(path=str(out_dir / "statusline-v0.9.png"), full_page=False)
 
