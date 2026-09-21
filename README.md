@@ -3,15 +3,14 @@
 Statusline is a Manifest V3 browser extension that adds a configurable,
 Vivaldi-style status bar to Microsoft Edge and Google Chrome.
 
-It keeps shortcuts at the left, an editable address field in the center, and
-status/actions at the right. The extension uses one Chromium codebase for Edge
+It keeps shortcuts at the left and status/actions aligned at the right, leaving
+the middle flexible so action controls remain available in narrow windows. The extension uses one Chromium codebase for Edge
 and Chrome; browser-specific APIs are detected at runtime.
 
 ## Features
 
 - Persistent top or bottom status bar with adjustable height, opacity, and
   light/dark/system themes.
-- Editable current-address field. Press Enter to navigate.
 - Link target display on hover.
 - Viewport dimensions and optional selected-text length.
 - Scroll position shown as a scrollbar-style indicator rather than a second
@@ -59,12 +58,12 @@ allow ordinary content scripts, so Statusline does not appear there. For local
 Statusline has three stable regions:
 
 ```text
-[ shortcuts + ]        [ current address ]        [ status / actions / clock ]
+[ shortcuts + ]                         [ status / actions / clock ]
 ```
 
 The shortcut dock stays at the far left. Saved shortcuts can be reordered by
-click-and-drag; the `+` manager remains last. The address field stays centered
-when space allows and narrows instead of overlapping either side.
+click-and-drag; the `+` manager remains last. The remaining width is reserved
+for status and action controls so they stay usable in narrower browser windows.
 
 ## Shortcuts
 
