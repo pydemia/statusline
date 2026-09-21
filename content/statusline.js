@@ -16,7 +16,6 @@
   let shadow;
   let barElement;
   let leftZone;
-  let centerZone;
   let rightZone;
   let currentZoom = 1;
   let clockTimer = null;
@@ -226,9 +225,6 @@
         --sl-border: rgb(0 0 0 / 0.18);
         --sl-hover: rgb(0 0 0 / 0.07);
         --sl-accent: #315ea8;
-        --sl-address-bg: #ffffff;
-        --sl-address-fg: #202020;
-        --sl-address-hover: #fafafa;
       }
 
       .bar[data-theme="dark"],
@@ -240,9 +236,6 @@
         --sl-border: rgb(255 255 255 / 0.15);
         --sl-hover: rgb(255 255 255 / 0.09);
         --sl-accent: #8ab4f8;
-        --sl-address-bg: #2b2d31;
-        --sl-address-fg: #f2f3f5;
-        --sl-address-hover: #303238;
       }
 
       .zone {
@@ -260,24 +253,11 @@
         border-right: 1px solid color-mix(in srgb, var(--sl-border) 82%, transparent);
       }
 
-      .zone-center {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 480px;
-        min-width: 0;
-        overflow: hidden;
-        justify-content: center;
-        align-items: center;
-        padding: 0 12px;
-      }
 
       .zone-right {
-        flex: 0 0 auto;
+        flex: 1 1 auto;
         justify-content: flex-end;
         min-width: 0;
-        max-width: 76vw;
         margin-left: auto;
         overflow: hidden;
       }
@@ -338,40 +318,6 @@
         border-right: 0;
       }
 
-      .address-widget {
-        width: min(780px, 100%);
-        min-width: 0;
-        padding: 0;
-        border-right: 0;
-        color: var(--sl-muted);
-      }
-
-      .address-input {
-        box-sizing: border-box;
-        width: 100%;
-        height: calc(var(--sl-height) - 8px);
-        min-width: 0;
-        padding: 0 8px;
-        border: 0;
-        border-radius: 5px;
-        outline: 0;
-        box-shadow: none;
-        background: var(--sl-address-bg);
-        color: var(--sl-address-fg);
-        font: inherit;
-        user-select: text;
-        transition: background 120ms ease, box-shadow 120ms ease;
-      }
-
-      .address-input:hover {
-        background: var(--sl-address-hover);
-      }
-
-      .address-input:focus {
-        background: var(--sl-address-bg);
-        color: var(--sl-address-fg);
-        box-shadow: 0 0 0 2px color-mix(in srgb, var(--sl-accent) 18%, transparent);
-      }
 
       .metric-widget {
         color: var(--sl-muted);
@@ -1740,58 +1686,6 @@
     scheduleClock();
   }
 
-  function normalizeAddressInput(rawValue) {
-    const raw = String(rawValue || "").trim();
-    if (!raw) {
-      throw new Error("Enter a web address.");
-    }
-    const candidate = /^[a-z][a-z0-9+.-]*:/i.test(raw) ? raw : `https://${raw}`;
-    const parsed = new URL(candidate);
-    if (!["http:", "https:", "file:"].includes(parsed.protocol)) {
-      throw new Error("Statusline can navigate to http, https, or file URLs.");
-    }
-    return parsed.href;
-  }
-
-  function createAddressWidget() {
-    const form = document.createElement("form");
-    form.className = "widget address-widget";
-    form.dataset.widget = "host";
-    form.setAttribute("role", "search");
-
-    const input = document.createElement("input");
-    input.className = "address-input";
-    input.type = "text";
-    input.inputMode = "url";
-    input.autocomplete = "off";
-    input.spellcheck = false;
-    input.setAttribute("aria-label", "Current page address");
-    input.value = location.href;
-    input.title = location.href;
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      try {
-        location.assign(normalizeAddressInput(input.value));
-      } catch (error) {
-        showToast(error?.message || "Invalid address.");
-        input.value = location.href;
-        input.select();
-      }
-    });
-    input.addEventListener("focus", () => input.select());
-    input.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        input.value = location.href;
-        input.blur();
-      }
-    });
-
-    form.append(input);
-    form.addressInput = input;
-    return form;
-  }
-
   function createWidget(id) {
     const actionLabels = {
       capture: "Capture",
@@ -1813,9 +1707,6 @@
     }
     if (id === "clock") {
       return createClockWidget();
-    }
-    if (id === "host") {
-      return createAddressWidget();
     }
 
     const classById = {
@@ -1873,8 +1764,6 @@
 
     leftZone = document.createElement("div");
     leftZone.className = "zone zone-left";
-    centerZone = document.createElement("div");
-    centerZone.className = "zone zone-center";
     rightZone = document.createElement("div");
     rightZone.className = "zone zone-right";
 
@@ -1886,7 +1775,7 @@
     }
 
     for (const config of settings.widgets) {
-      if (!config.enabled || config.id === "panels" || config.id === "host") {
+      if (!config.enabled || config.id === "panels") {
         continue;
       }
       const element = createWidget(config.id);
@@ -1894,14 +1783,7 @@
       rightZone.append(element);
     }
 
-    const addressConfig = settings.widgets.find((config) => config.id === "host");
-    if (addressConfig?.enabled) {
-      const address = createWidget("host");
-      widgetElements.set("host", address);
-      centerZone.append(address);
-    }
-
-    bar.append(leftZone, centerZone, rightZone);
+    bar.append(leftZone, rightZone);
     const toast = document.createElement("div");
     toast.className = "toast";
     toast.dataset.theme = resolvedTheme();
@@ -1917,33 +1799,7 @@
     scheduleClock();
   }
 
-  function updateZoneLayout() {
-    if (!barElement?.isConnected || !leftZone?.isConnected || !centerZone?.isConnected || !rightZone?.isConnected) {
-      return;
-    }
-    const barRect = barElement.getBoundingClientRect();
-    const leftRect = leftZone.getBoundingClientRect();
-    const rightRect = rightZone.getBoundingClientRect();
-    const gap = 10;
-    const centerX = barRect.left + barRect.width / 2;
-    const leftClearance = centerX - leftRect.right - gap;
-    const rightClearance = rightRect.left - centerX - gap;
-    const symmetricWidth = Math.max(0, Math.min(720, 2 * Math.min(leftClearance, rightClearance)));
-
-    if (symmetricWidth >= 150) {
-      centerZone.style.left = "50%";
-      centerZone.style.transform = "translateX(-50%)";
-      centerZone.style.width = `${Math.floor(symmetricWidth)}px`;
-      return;
-    }
-
-    const availableLeft = leftRect.right + gap;
-    const availableRight = rightRect.left - gap;
-    const availableWidth = Math.max(0, availableRight - availableLeft);
-    centerZone.style.left = `${Math.round(availableLeft - barRect.left)}px`;
-    centerZone.style.transform = "none";
-    centerZone.style.width = `${Math.max(0, availableWidth)}px`;
-  }
+  function updateZoneLayout() {}
 
   function updateVisibility() {
     if (!host) {
@@ -2607,25 +2463,12 @@
   }
 
   function updateAll() {
-    updateHost();
     updateViewport();
     updateSelection();
     updateScroll();
     updateLinkStatus(currentLink);
     updateClock();
   }
-
-  function updateHost() {
-    const element = widgetElements.get("host");
-    if (!element?.addressInput) {
-      return;
-    }
-    if (shadow?.activeElement !== element.addressInput) {
-      element.addressInput.value = location.href;
-    }
-    element.addressInput.title = location.href;
-  }
-
 
   function updateViewport() {
     const element = widgetElements.get("viewport");
@@ -3816,8 +3659,6 @@
       positionFloatingSurface();
     }, { passive: true });
     addEventListener("scroll", handleScroll, { passive: true, capture: true });
-    addEventListener("popstate", updateHost);
-    addEventListener("hashchange", updateHost);
     document.addEventListener("selectionchange", handleSelection, { passive: true });
     document.addEventListener("pointerover", handlePointerOver, { passive: true, capture: true });
     document.addEventListener("pointerout", handlePointerOut, { passive: true, capture: true });
