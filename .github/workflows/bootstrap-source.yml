@@ -28,6 +28,7 @@ jobs:
           unzip -tq /tmp/statusline-source.zip
           mkdir -p /tmp/statusline-source
           unzip -oq /tmp/statusline-source.zip -d /tmp/statusline-source
+          rm -f /tmp/statusline-source/.github/workflows/ci.yml
 
       - name: Replace bootstrap tree with source
         shell: bash
