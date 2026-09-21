@@ -2,6 +2,13 @@
 
 ## 1.0.0
 
+- Removed the centered editable address field so compact browser windows reserve
+  available width for Statusline actions and status widgets.
+- Simplified the bar from three layout zones to two: Shortcuts at the far left
+  and all status/actions at the right.
+- Existing saved settings that still contain the legacy `host` widget are
+  migrated automatically and ignored.
+
 - Added generic full-height edge-rail docking for left/right side navigation,
   drawers, and secondary columns that are not mounted as fixed portal roots.
   Tall edge columns now share the Statusline boundary even when they are
