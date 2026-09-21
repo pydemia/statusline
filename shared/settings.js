@@ -13,12 +13,6 @@
       side: "right"
     },
     {
-      id: "host",
-      label: "Address",
-      description: "Shows the current URL in a wider editable address field.",
-      side: "left"
-    },
-    {
       id: "capture",
       label: "Capture",
       description: "Captures visible, selected, scrolling, or full-page content as PNG.",
@@ -171,17 +165,17 @@
       result.push(clone(defaultItem));
     }
 
-    // Statusline has three semantic zones: shortcuts at the far
-    // left, the editable address field in the center, and every other status /
-    // action widget aligned from the far right. Preserve user ordering within
-    // the right-side group, but do not let placement settings collapse the zones.
+    // Statusline has two semantic zones: shortcuts at the far left and every
+    // status/action widget aligned from the far right. Preserve user ordering
+    // within the right-side group, but do not let placement settings collapse
+    // the zones.
     const panelIndex = result.findIndex((item) => item.id === "panels");
     if (panelIndex > 0) {
       const [panels] = result.splice(panelIndex, 1);
       result.unshift(panels);
     }
     for (const item of result) {
-      if (item.id === "panels" || item.id === "host") {
+      if (item.id === "panels") {
         item.side = "left";
       } else {
         item.side = "right";
