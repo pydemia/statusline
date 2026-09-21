@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Statusline settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">STATUSLINE</p>
+        <h1>Settings</h1>
+        <p class="subtitle">Configure a persistent browser status bar without changing page code.</p>
+      </div>
+      <div class="header-actions">
+        <button id="reset" class="secondary" type="button">Reset defaults</button>
+        <button id="save" class="primary" type="button">Save</button>
+      </div>
+    </header>
+
+    <section class="settings-section" aria-labelledby="appearance-heading">
+      <div class="section-heading">
+        <h2 id="appearance-heading">Appearance</h2>
+        <p>Use a comfortable browser-chrome height with clear interactive controls.</p>
+      </div>
+      <div class="form-grid">
+        <label>
+          <span>Position</span>
+          <select id="position">
+            <option value="bottom">Bottom</option>
+            <option value="top">Top</option>
+          </select>
+        </label>
+        <label>
+          <span>Theme</span>
+          <select id="theme">
+            <option value="auto">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <label>
+          <span>Bar height <output id="height-output"></output></span>
+          <input id="height" type="range" min="28" max="52" step="1">
+        </label>
+        <label>
+          <span>Font size <output id="font-size-output"></output></span>
+          <input id="font-size" type="range" min="10" max="15" step="1">
+        </label>
+        <label>
+          <span>Opacity <output id="opacity-output"></output></span>
+          <input id="opacity" type="range" min="0.75" max="1" step="0.01">
+        </label>
+      </div>
+      <div class="toggle-stack">
+        <label class="toggle-row">
+          <input id="enabled" type="checkbox">
+          <span><strong>Show Statusline</strong><small>Global on/off switch. Shortcut: Alt+Shift+S.</small></span>
+        </label>
+        <label class="toggle-row">
+          <input id="hide-fullscreen" type="checkbox">
+          <span><strong>Hide in page fullscreen</strong><small>Keeps video and presentation fullscreen clean.</small></span>
+        </label>
+        <label class="toggle-row">
+          <input id="reserve-space" type="checkbox">
+          <span><strong>Dock below page content</strong><small>Uses a compatibility-safe content inset. Full-height apps constrain only their app shell; document pages keep their existing html/body layout. Turn off only if you prefer overlay mode.</small></span>
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-section" aria-labelledby="clock-heading">
+      <div class="section-heading">
+        <h2 id="clock-heading">Clock</h2>
+        <p>Set the date and time layout directly with a format pattern.</p>
+      </div>
+      <div class="clock-format-block">
+        <label>
+          <span>Date & time format</span>
+          <input id="date-time-format" type="text" maxlength="80"
+                 list="date-time-format-presets" autocomplete="off"
+                 placeholder="YYYY-MM-DD ddd HH:mm">
+        </label>
+        <label>
+          <span>Primary time zone</span>
+          <input id="clock-time-zone" type="text" maxlength="64"
+                 list="clock-time-zone-presets" autocomplete="off"
+                 placeholder="Asia/Seoul">
+        </label>
+        <datalist id="clock-time-zone-presets">
+          <option value="UTC"></option>
+          <option value="Asia/Seoul"></option>
+          <option value="Asia/Tokyo"></option>
+          <option value="Asia/Shanghai"></option>
+          <option value="Asia/Hong_Kong"></option>
+          <option value="Asia/Singapore"></option>
+          <option value="Europe/London"></option>
+          <option value="Europe/Berlin"></option>
+          <option value="America/New_York"></option>
+          <option value="America/Los_Angeles"></option>
+        </datalist>
+        <datalist id="date-time-format-presets">
+          <option value="YYYY-MM-DD ddd HH:mm"></option>
+          <option value="YYYY.MM.DD ddd HH:mm"></option>
+          <option value="MMM D, YYYY ddd h:mm A"></option>
+          <option value="MM-DD ddd HH:mm:ss"></option>
+          <option value="HH:mm"></option>
+        </datalist>
+        <p class="format-help">
+          Tokens: YYYY, YY, MMMM, MMM, MM, M, DD, D, dddd, ddd,
+          HH, H, hh, h, mm, m, ss, s, A, a. Put literal text in [brackets].
+          Use an IANA time zone such as Asia/Seoul. World clocks are managed
+          by clicking the clock in Statusline.
+        </p>
+      </div>
+    </section>
+
+    <section class="settings-section" aria-labelledby="widgets-heading">
+      <div class="section-heading split">
+        <div>
+          <h2 id="widgets-heading">Widgets</h2>
+          <p>Drag ordinary widgets to change order. Shortcuts stay far left and the address field stays centered.</p>
+        </div>
+      </div>
+      <div id="widget-list" class="widget-list" aria-label="Statusline widgets"></div>
+    </section>
+
+    <p id="save-status" class="save-status" role="status" aria-live="polite"></p>
+  </main>
+
+  <script src="../shared/settings.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

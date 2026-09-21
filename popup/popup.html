@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Statusline</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header>
+      <strong>Statusline</strong>
+      <span id="version"></span>
+    </header>
+
+    <label class="switch-row">
+      <span>Show status bar</span>
+      <input id="enabled" type="checkbox">
+    </label>
+
+    <label>
+      <span>Position</span>
+      <select id="position">
+        <option value="bottom">Bottom</option>
+        <option value="top">Top</option>
+      </select>
+    </label>
+
+    <label id="site-row" class="switch-row muted-row">
+      <span><span>Show on this site</span><small id="site-host">Current site</small></span>
+      <input id="site-enabled" type="checkbox" checked>
+    </label>
+
+    <button id="settings" type="button">Settings…</button>
+    <p class="hint">Shortcut: Alt+Shift+S</p>
+  </main>
+  <script src="../shared/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

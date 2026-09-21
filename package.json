@@ -1,0 +1,9 @@
+{
+  "name": "statusline-browser-extension",
+  "version": "0.10.2",
+  "private": true,
+  "scripts": {
+    "test": "node tests/validate.mjs && node tests/background-actions.mjs",
+    "test:runtime": "python tests/render_runtime.py"
+  }
+}
