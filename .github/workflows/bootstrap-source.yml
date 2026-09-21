@@ -1,5 +1,6 @@
 name: Bootstrap Statusline source
 
+# Final bootstrap trigger after all archive chunks are present.
 on:
   push:
     branches: [main]
