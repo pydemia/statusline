@@ -86,8 +86,8 @@ const migratedWidgets = api.normalizeSettings({
 }).widgets;
 assert.equal(migratedWidgets[0].id, "panels");
 assert.equal(migratedWidgets[0].side, "left");
-assert.equal(migratedWidgets.find((item) => item.id === "host").side, "left");
-for (const item of migratedWidgets.filter((item) => !["panels", "host"].includes(item.id))) {
+assert.ok(!migratedWidgets.some((item) => item.id === "host"));
+for (const item of migratedWidgets.filter((item) => item.id !== "panels")) {
   assert.equal(item.side, "right", `${item.id} should be in the right zone`);
 }
 const migrated = api.normalizeSettings({ height: 26, fontSize: 12 });
@@ -98,6 +98,7 @@ assert.ok(api.isValidTimeZone("Asia/Seoul"));
 assert.ok(!api.isValidTimeZone("Mars/Olympus"));
 assert.ok(!api.WIDGETS.some((widget) => widget.id === "title"));
 assert.ok(!api.WIDGETS.some((widget) => widget.id === "load"));
+assert.ok(!api.WIDGETS.some((widget) => widget.id === "host"));
 const clockSettings = api.normalizeSettings({
   clockTimeZone: "Asia/Seoul",
   worldClocks: ["UTC", "America/New_York", "UTC", "Mars/Olympus"]
