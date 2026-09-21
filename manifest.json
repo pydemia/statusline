@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Statusline",
   "version": "0.10.2",
-  "description": "A configurable Vivaldi-style status bar with shortcuts, world clocks, and browser actions for Chromium browsers.",
+  "description": "A configurable browser status bar with shortcuts, capture tools, world clocks, and browser actions for Chromium browsers.",
   "permissions": [
     "storage"
   ],
