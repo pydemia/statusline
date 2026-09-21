@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "manifest.json"), "utf8"));
 assert.equal(manifest.manifest_version, 3);
-assert.equal(manifest.version, "0.10.2");
+assert.equal(manifest.version, "1.0.0");
 assert.ok(!fs.readFileSync(path.join(root, "content/statusline.js"), "utf8").includes("<iframe"));
 assert.equal(manifest.background.service_worker, "background.js");
 const contentScript = fs.readFileSync(path.join(root, "content/statusline.js"), "utf8");
